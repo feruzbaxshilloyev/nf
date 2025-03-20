@@ -7,13 +7,17 @@ from .models import *
 def index(request):
     ctg = Category.objects.all()
     ctg1 = Category.objects.filter(is_active=True)
-    news = News.objects.all().order_by('-id')
+    news = News.objects.all().order_by('-created_at')
     popular = News.objects.all().order_by('-views')
+    sps = Sponsors.objects.all()
+    dt = Date.objects.all()
     ctx = {
         'ctg': ctg,
         'ctg1': ctg1,
         'news': news,
         'popular': popular,
+        'sps': sps,
+        'dt': dt,
     }
     return render(request, 'index.html', ctx)
 
@@ -35,18 +39,3 @@ def category(request, id):
     }
     return render(request, 'category.html', ctx)
 
-
-def sponsors(request):
-    sps = Sponsors.objects.all()
-    ctx = {
-        'sps': sps,
-    }
-    return render(request, 'sponsors.html', ctx)
-
-
-def date_add(request):
-    dt = Date.objects.all()
-    ctx = {
-        'dt': dt,
-    }
-    return render(request, 'index.html', ctx)
