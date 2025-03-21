@@ -1,152 +1,188 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
+{% load static %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ category.name }} | NewsFeed</title>
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/theme.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
-    <style>
-        body {
-            background: linear-gradient(to right, #ff7e5f, #feb47b);
-            color: #fff;
-        }
-        .news-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            transition: 0.3s;
-        }
-        .news-card:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-        }
-        .news-card img {
-            border-radius: 10px;
-            width: 100%;
-        }
-        h2 span {
-            color: #ffde59;
-        }
-        .footer_bottom {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px;
-            text-align: center;
-        }
-    </style>
+<title>NewsFeed</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-awesome.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/animate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/font.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/li-scroller.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/slick.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/jquery.fancybox.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/theme.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
+<style>.pink-bg {
+    background-color: #ff70b4; /* Pushti rang */
+    color: white; /* Matn rangi */
+}
+</style>
+
+<!--[if lt IE 9]>
+<script src="assets/js/html5shiv.min.js"></script>
+<script src="assets/js/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
-    <div id="preloader">
-        <div id="status">&nbsp;</div>
+<div id="preloader">
+  <div id="status">&nbsp;</div>
+</div>
+<a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
+<div class="container">
+  <header id="header">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="header_top">
+          <div class="header_top_left">
+            <ul class="top_nav">
+              <li><a href="{% url 'index' %}">Home</a></li>
+              <li><a href="{% url 'about' %}">About</a></li>
+              <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+          </div>
+          <div class="header_top_right">
+            <p>{{ date }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="header_bottom">
+          <div class="logo_area"><a href="{% url 'index' %}" class="logo"><img src="{% static 'images/logo.jpg' %}" alt=""></a></div>
+          <div class="add_banner"><a href="#"><img src="{% static 'images/addbanner_728x90_V1.jpg' %}" alt=""></a></div>
+        </div>
+      </div>
     </div>
-    <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
-    <div class="container">
-        <header id="header">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="header_top">
-                        <div class="header_top_left">
-                            <ul class="top_nav">
-                                <li><a href="{% url 'index' %}">Home</a></li>
-                                <li><a href="{% url 'about' %}">About</a></li>
-                                <li><a href="{% url 'contact' %}">Contact</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <section id="newsSection">
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <div class="latest_newsarea"> <span>{{ category.name }}</span>
-                        <ul id="ticker01" class="news_sticker">
-                            {% for news in category.news_set.all %}
-                            <li>
-                                <a href="{% url 'news_detail' news.id %}">
-                                    <img src="{{ news.image.url }}" alt="">{{ news.title }}
-                                </a>
-                            </li>
-                            {% empty %}
-                            <li>No news available in this category.</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="contentSection">
-            <div class="row">
-                <div class="col-lg-8 col-md-8 col-sm-8">
-                    <div class="left_content">
-                        <div class="single_post_content">
-                            <h2><span>{{ category.name }} News</span></h2>
-                            <div class="row">
-                                {% for news in category.news_set.all %}
-                                <div class="col-md-6">
-                                    <div class="news-card">
-                                        <a href="{% url 'news_detail' news.id %}">
-                                            <img src="{{ news.image.url }}" alt="{{ news.title }}">
-                                        </a>
-                                        <h3><a href="{% url 'news_detail' news.id %}">{{ news.title }}</a></h3>
-                                        <p>{{ news.short_dec|slice:"100" }}...</p>
-                                    </div>
-                                </div>
-                                {% empty %}
-                                <p>No news available in this category.</p>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4">
-                    <aside class="right_content">
-                        <div class="single_sidebar">
-                            <h2><span>Popular News</span></h2>
-                            <ul class="spost_nav">
-                                {% for news in popular_news|slice:":5" %}
-                                <li>
-                                    <div class="media wow fadeInDown">
-                                        <a href="{% url 'news_detail' news.id %}" class="media-left">
-                                            <img alt="" src="{{ news.image.url }}">
-                                        </a>
-                                        <div class="media-body">
-                                            <a href="{% url 'news_detail' news.id %}" class="catg_title">{{ news.title }}</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                {% empty %}
-                                <p>No popular news available.</p>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </aside>
-                </div>
-            </div>
-        </section>
-        <footer id="footer">
-            <div class="footer_top">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4">
-                        <div class="footer_widget">
-                            <h2>Contact</h2>
-                            <p>For any inquiries, reach out to us.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footer_bottom">
-                <p class="copyright">&copy; 2025 NewsFeed. All rights reserved.</p>
-            </div>
-        </footer>
+  </header>
+<section id="navArea">
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav main_nav">
+                {% for ctg in ctg1 %}
+                    <li>
+                        <a href="{% url 'ct_d' ctg.id %}"
+                           {% if ctg.id == idd %}
+                           class="pink-bg"
+                           {% endif %}>
+                            {{ ctg.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+</section>  <section id="newsSection">
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+        <div class="latest_newsarea"> <span>Latest News</span>
+          <ul id="ticker01" class="news_sticker">
+            {% for new in news %}
+            {% if forloop.counter < 4 %}
+              <li><a href="{% url 'n_d' new.pk %}"><img src="{{ new.image.url }}" alt="">{{ new.title }}</a></li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+          <div class="social_area">
+            <ul class="social_nav">
+                <li class="facebook"><a href="https://www.facebook.com" target="_blank"></a></li>
+                <li class="twitter"><a href="https://www.twitter.com" target="_blank"></a></li>
+                <li class="flickr"><a href="https://www.flickr.com" target="_blank"></a></li>
+                <li class="pinterest"><a href="https://www.pinterest.com" target="_blank"></a></li>
+                <li class="googleplus"><a href="https://plus.google.com" target="_blank"></a></li>
+                <li class="vimeo"><a href="https://www.vimeo.com" target="_blank"></a></li>
+                <li class="youtube"><a href="https://www.youtube.com" target="_blank"></a></li>
+                <li class="mail"><a href="mailto:example@example.com"></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
-    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'assets/js/custom.js' %}"></script>
+  </section>
+  <section id="sliderSection">
+    <div class="row">
+      <div class="col-lg-8 col-md-8 col-sm-8">
+        <div class="slick_slider">
+          {% for new in news %}
+          {% if forloop.counter < 4 %}
+          <div class="single_iteam"> <a href = "{% url 'n_d' new.pk %}"> <img src="{{ new.image.url }}" alt=""></a>
+            <div class="slider_article">
+              <h2><a class="slider_tittle" href="{% url 'n_d' new.pk %}">{{ new.title }}</a></h2>
+              <p>{{ new.short_desc }}...</p>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4">
+        <div class="latest_post">
+          <h2><span>Latest post</span></h2>
+          <div class="latest_post_container">
+            <div id="prev-button"><i class="fa fa-chevron-up"></i></div>
+            <ul class="latest_postnav">
+              <li>
+                {% for new in news %}
+                {% if forloop.counter < 6 %}
+                <div class="media"> <a href="{% url 'n_d' new.pk %}" class="media-left"> <img alt="" src="{{ new.image.url }}"> </a>
+                  <div class="media-body"> <a href="{% url 'n_d' new.pk %}" class="catg_title"> {{ new.title }}</a> </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+              </li>
+            </ul>
+            <div id="next-button"><i class="fa  fa-chevron-down"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+    <footer id="footer">
+    <div class="footer_top">
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4">
+          <div class="footer_widget wow fadeInLeftBig">
+            <h2>Flickr Images</h2>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4">
+          <div class="footer_widget wow fadeInDown">
+            <h2>Tag</h2>
+            <ul class="tag_nav">
+            <li><a href="{% url 'ct_d' ctg.pk %}">{{ ctg.name }}</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4">
+          <div class="footer_widget wow fadeInRightBig">
+            <h2>Contact</h2>
+            <a href="{% url 'contact' %}">BIZ BILAN BOG'LANISH</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer_bottom">
+      <p class="copyright">NEWS &copy; 2025 <a href="#">NewsFeed</a></p>
+      <p class="developer">Developed By Wpfreeware</p>
+    </div>
+  </footer>
+</div>
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/wow.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/slick.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.li-scroller.1.0.js' %}"></script>
+<script src="{% static 'assets/js/jquery.newsTicker.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.fancybox.pack.js' %}"></script>
+<script src="{% static 'assets/js/custom.js' %}"></script>
 </body>
 </html>

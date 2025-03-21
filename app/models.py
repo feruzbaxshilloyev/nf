@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.db import models
 
 
@@ -35,5 +34,12 @@ class Sponsors(models.Model):
         return self.name
 
 
-class Date(models.Model):
-    date = models.DateField(auto_now_add=True)
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    view = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.name} -> {self.message}"
