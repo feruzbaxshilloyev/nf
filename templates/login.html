@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="uz">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tizimga kirish</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <style>
+        body {
+            background: url("{% static 'assets/images/login-bg.jpg' %}") no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        .btn-primary {
+            background-color: #3182CE;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #2B6CB0;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container col-md-4">
+        <h3 class="text-center text-dark">Tizimga kirish</h3>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Foydalanuvchi nomi</label>
+                <input type="text" name="username" class="form-control" placeholder="Foydalanuvchi nomingiz" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Parol</label>
+                <input type="password" name="password" class="form-control" placeholder="Parolingiz" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Kirish</button>
+        </form>
+        <p class="text-center mt-3">Hisobingiz yo‘qmi? <a href="{% url 'register' %}">Ro‘yxatdan o‘tish</a></p>
+    </div>
+</body>
+</html>

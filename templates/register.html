@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="uz">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ro‘yxatdan o‘tish</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <style>
+        body {
+            background-color: #F7F9FC;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .card {
+            width: 400px;
+            padding: 30px;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .btn-primary {
+            background-color: #4A90E2;
+            border: none;
+            transition: 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background-color: #357ABD;
+            transform: scale(1.05);
+        }
+        .form-control:focus {
+            border-color: #4A90E2;
+            box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+        }
+        .alert-danger {
+            color: white;
+            background-color: red;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h3 class="text-center text-dark">Ro‘yxatdan o‘tish</h3>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Username:</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email:</label>
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Parol:</label>
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Parolni tasdiqlang:</label>
+                {{ form.password2 }}
+                {{ form.password2.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Telefon:</label>
+                {{ form.phone }}
+                {{ form.phone.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Manzil:</label>
+                {{ form.address }}
+                {{ form.address.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tug‘ilgan sana:</label>
+                {{ form.birth_date }}
+                {{ form.birth_date.errors }}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Ro‘yxatdan o‘tish</button>
+        </form>
+
+        <p class="text-center mt-3">Hisobingiz bormi? <a href="{% url 'login' %}">Tizimga kirish</a></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Umumiy sahifa dizayni */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+
+        /* Profil kartochkasi */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 400px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Avatar rasmi */
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Profil ismi */
+        h2 {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* Profil ma'lumotlari */
+        .profile-body p {
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* Animatsiyali tugma */
+        .animated-button {
+            display: inline-block;
+            margin-top: 15px;
+            background: white;
+            color: #007bff;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .animated-button:hover {
+            background-color: #007bff;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Fade-in animatsiya */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .logout-button {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        .logout-button:hover {
+            background-color: #cc0000;
+        }
+
+        .back-button {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .back-button:hover {
+            background-color: #d6d8db;
+        }
+
+        .top-right-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: #007bff;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .top-right-button:hover {
+            background-color: #007bff;
+            color: white;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'user_com' %}" class="top-right-button">📝 Mening Kommentlarim</a>
+    <div class="profile-card">
+        <div class="profile-header">
+            <img src="{{ profile.avatar.url|default:'/media/images/default.png' }}" alt="Avatar" class="profile-avatar">
+            <h2>{{ profile.user.username }}</h2>
+            <p class="user-email">{{ profile.user.email }}</p>
+        </div>
+        <div class="profile-body">
+            <p>📞 <strong>Telefon:</strong> {{ profile.phone|default:"Kiritilmagan" }}</p>
+            <p>📍 <strong>Manzil:</strong> {{ profile.address|default:"Kiritilmagan" }}</p>
+            <p>🎂 <strong>Tug‘ilgan sana:</strong> {{ profile.birth_date|default:"Kiritilmagan" }}</p>
+            <a href="{% url 'edit' %}" class="animated-button">✏ Profilni Tahrirlash</a>
+        </div>
+        <div class="button-container">
+            <a href="{% url 'logout' %}" class="animated-button logout-button">🚪 Chiqish</a>
+            <a href="{% url 'index' %}" class="animated-button back-button">⬅️ Ortga</a>
+        </div>
+    </div>
+</body>
+</html>
