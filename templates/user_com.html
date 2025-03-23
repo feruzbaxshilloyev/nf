@@ -93,6 +93,7 @@
 </head>
 <body>
     <div class="comment-container">
+        <a href="{% url 'index' %}" class="edit-btn"><i class="fa fa-home"></i>Bosh sahifa</a>
         <h2><i class="fa fa-comment"></i> Mening Kommentariyalarim</h2>
 
         {% for comment in comments %}
@@ -102,17 +103,17 @@
             </div>
             <div class="comment-header">
                 <span class="date">{{ comment.created_at }}</span>
-            </div>
+            </div><hr>
             <div class="content">{{ comment.content }}</div>
             <div class="comment-actions">
-                <a href="{% url 'com_d' comment.id %}" class="edit-btn"><i class="fa fa-eye"></i>Ko'rish</a>
+                <a href="{% url 'comment' comment.news.id %}" class="edit-btn"><i class="fa fa-eye"></i>Ko'rish</a>
             </div>
         </div>
         {% empty %}
         <p>Hozircha sizda kommentariyalar yo‘q.</p>
         {% endfor %}
 
-        <a href="{% url 'index' %}" class="back-link">Bosh sahifaga qaytish</a>
+
     </div>
 </body>
 </html>
