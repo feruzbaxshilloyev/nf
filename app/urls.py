@@ -18,5 +18,7 @@ urlpatterns = [
     path('com_edit/<int:pk>/', edit_comment, name='c_edit'),
     path('c_delete/<int:pk>/', delete_comment, name='c_del'),
     path('user_com/', user_com, name='user_com'),
-    path('com_detail/<int:pk>/', com_d, name='com_d')
+    path('add_new/', add_new, name='add_new'),
+    path('add_ctg/', add_ctg, name='add_ctg'),
+    path('add_admin/', add_admin, name='add_admin'),
 ]

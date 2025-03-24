@@ -107,6 +107,11 @@
               <li><a href="{% url 'index' %}">Home</a></li>
               <li><a href="{% url 'about' %}">About</a></li>
               <li><a href="{% url 'contact' %}">Contact</a></li>
+                {% if user.username == 'admin' %}
+              <li><p>_ _ _ _</p></li>
+              <li><p>_ _</p></li>
+              <li><a href="{% url 'add_new' %}" class="fa fa-plus">Yangilik kiritish</a></li>
+                {% endif %}
             </ul>
           </div>
           <div class="header_top_right">

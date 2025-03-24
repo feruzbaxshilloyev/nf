@@ -124,10 +124,24 @@
             color: white;
             transform: scale(1.1);
         }
+        .top-right-buttons {
+    display: flex;
+    flex-direction: column; /* Tugmalarni vertikal joylashtirish */
+    align-items: flex-start; /* Chapga tekislash (xohishga ko‘ra o‘zgartirish mumkin) */
+}
+
+.second-button {
+    margin-top: 70px; /* Tugmalar orasidagi masofani oshirish */
+}
     </style>
 </head>
 <body>
+   <div class="top-right-buttons">
     <a href="{% url 'user_com' %}" class="top-right-button">📝 Mening Kommentlarim</a>
+       {% if user.username == 'admin' %}
+    <a href="{% url 'add_admin' %}" class="top-right-button second-button">➕ Admin qo'shish</a>
+       {% endif %}
+</div>
     <div class="profile-card">
         <div class="profile-header">
             <img src="{{ profile.avatar.url|default:'/media/images/default.png' }}" alt="Avatar" class="profile-avatar">

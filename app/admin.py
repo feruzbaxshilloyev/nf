@@ -16,7 +16,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("avatar", 'phone', 'address', 'birth_date')
+    list_display = ("avatar", 'phone', 'address', 'birth_date', 'user')
 
 
 admin.site.register(ContactMessage, ContactMessageAdmin)

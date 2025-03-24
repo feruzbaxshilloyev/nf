@@ -322,7 +322,75 @@ def user_com(request):
     return render(request, 'user_com.html', {'comments': comments})
 
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import News, Category
+
+
 @login_required
-def com_d(request, pk):
-    comment = get_object_or_404(Comment, id=pk)
-    return redirect('n_d', pk=comment.news.id)
+def add_new(request):
+    if request.user.username != 'admin':
+        messages.error(request, "Faqat admin yangilik qo'shishi mumkin!")
+        return redirect('index')
+
+    categories = Category.objects.all()
+
+    if request.method == "POST":
+        title = request.POST.get('title')
+        short_dec = request.POST.get('short_dec')
+        desc = request.POST.get('desc')
+        category_id = request.POST.get('category')
+        image = request.FILES.get('image')
+
+        if title and short_dec and desc and category_id:
+            category = Category.objects.get(id=category_id)
+            News.objects.create(
+                title=title,
+                short_dec=short_dec,
+                desc=desc,
+                category=category,
+                image=image,
+                author=request.user.username
+            )
+            messages.success(request, "Yangilik muvaffaqiyatli qo'shildi!")
+            return redirect('index')
+
+        messages.error(request, "Barcha maydonlarni to'ldiring!")
+
+    return render(request, 'add_news.html', {'categories': categories})
+
+
+def add_ctg(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        is_active = request.POST.get("is_active") == "on"
+
+        if name:
+            Category.objects.create(name=name, is_active=is_active)
+            return redirect("add_new")
+
+    return render(request, "ctg_add.html")
+
+
+@login_required
+def add_admin(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+
+        try:
+            user = User.objects.get(username=username)
+            if not user.is_superuser:
+                user.is_staff = True
+                user.is_superuser = True
+                user.save()
+                messages.success(request, f"{user.username} endi admin!")
+            else:
+                messages.warning(request, f"{user.username} allaqachon admin!")
+        except User.DoesNotExist:
+            messages.error(request, "Bunday username mavjud emas!")
+
+        return redirect("add_admin")
+
+    users = User.objects.filter(is_superuser=False)
+    return render(request, "add_admin.html", {"users": users})
