@@ -21,4 +21,5 @@ urlpatterns = [
     path('add_new/', add_new, name='add_new'),
     path('add_ctg/', add_ctg, name='add_ctg'),
     path('add_admin/', add_admin, name='add_admin'),
+    path('api/v1/', NewsList.as_view(), name='api_v')
 ]

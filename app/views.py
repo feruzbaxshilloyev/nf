@@ -1,7 +1,5 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib import messages
-from django.http import HttpResponseForbidden
-
 from .forms import ContactMessageForm, RegisterForm, ProfileForm
 from .models import *
 from django.shortcuts import render, redirect
@@ -10,7 +8,9 @@ from .models import Comment
 from .forms import CommentForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import News
+from rest_framework.generics import ListAPIView, UpdateAPIView, CreateAPIView
+from .serializers import NewsSerializer
+from .utils import *
 
 
 def date_view():
@@ -23,6 +23,7 @@ def index(request):
     news = News.objects.all().order_by('-created_at')
     popular = News.objects.all().order_by('-views')
     sps = Sponsors.objects.all()
+    queryset = bank()
     ctx = {
         'ctg': ctg,
         'ctg1': ctg1,
@@ -30,6 +31,7 @@ def index(request):
         'popular': popular,
         'sps': sps,
         'date': date_view(),
+        'query': queryset,
     }
     return render(request, 'index.html', ctx)
 
@@ -330,7 +332,7 @@ from .models import News, Category
 
 @login_required
 def add_new(request):
-    if request.user.username != 'admin':
+    if not request.user.is_staff:
         messages.error(request, "Faqat admin yangilik qo'shishi mumkin!")
         return redirect('index')
 
@@ -394,3 +396,10 @@ def add_admin(request):
 
     users = User.objects.filter(is_superuser=False)
     return render(request, "add_admin.html", {"users": users})
+
+
+class NewsList(ListAPIView):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
+
+
